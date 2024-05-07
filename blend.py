@@ -55,24 +55,12 @@ arguments = {
   "image_resolution": [args.resolution, args.resolution], # recommend >1080 for paper figures
   "number_of_samples": 200, # recommend >200 for paper figures
   "mesh_path": input_path, # either .ply or .obj
-  #airplane
   "mesh_position": (1.5042, 0.027193, 1.0916), # UI: click mesh > Transform > Location
   "mesh_rotation": (-172.82, 24.136, -171.62),
-  #basket
-  # "mesh_position": (0.834084, 0.02075, 0.912612), # UI: click mesh > Transform > Location
-  # basket side view
-  # "mesh_rotation": (94.9766, 1.33698, 94.5183),
-  # basket bottom view
-  # "mesh_rotation": (149.739, 0.263232, 91.6742),
   "mesh_scale": (1.5, 1.5, 1.5), # UI: click mesh > Transform > Scale
   "shading": "smooth", # either "flat" or "smooth"
   "subdivision_iteration": 0, # integer
-  # "mesh_RGB": [144.0/255, 210.0/255, 236.0/255], # cyan
-  # "mesh_RGB": [102.0/255, 153.0/255, 102.0/255], # cactus green
   "mesh_RGB": [26 / 255.0, 150 / 255.0, 173 / 255.0], #coral
-  # "mesh_RGB": [217.0/255, 175.0/255, 55.0/255], # gold
-#   "mesh_RGB": None,
-  # "mesh_RGB": [112.0/255, 128.0/255, 144.0/255], # grey
   "light_angle": (6, -30, -155) # UI: click Sun > Transform > Rotation
 }
 
