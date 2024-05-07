@@ -72,5 +72,10 @@ if not args.force_update:
 with open(json_output, "w") as f:
     json.dump(arguments, f, indent=2)
 
+# Remove all planes in the scene
+for obj in bpy.data.objects:
+    if obj.type == 'MESH' and obj.data.name.startswith('Plane'):
+        bpy.data.objects.remove(obj, do_unlink=True)
+
 bt.render_mesh_default(arguments)
 
