@@ -24,7 +24,7 @@ class colorObj(object):
         self.B = B # birghtness
         self.C = C # contrast
 
-def render_mesh_default(args):
+def render_mesh_default(args, no_plane=False):
   ## initialize blender
   imgRes_x = args["image_resolution"][0]
   imgRes_y = args["image_resolution"][1]
@@ -65,7 +65,8 @@ def render_mesh_default(args):
   setMat_plastic(mesh, meshColor)
 
   ## set invisible plane (shadow catcher)
-  invisibleGround(shadowBrightness=0.9)
+  if not no_plane:
+      invisibleGround(shadowBrightness=0.9)
 
   ## set camera 
   camLocation = (3, 0, 2)

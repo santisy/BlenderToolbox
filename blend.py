@@ -10,6 +10,7 @@ parser.add_argument("-i", "--input_file", type=str, required=True)
 parser.add_argument("-o", "--output_index", type=int, required=True)
 parser.add_argument("-r", "--resolution", type=int, default=1440)
 parser.add_argument("-f", "--force_update", action="store_true")
+parser.add_argument("-n", "--no_plane", action="store_true")
 
 def normalize_mesh(mesh):
     """
@@ -72,10 +73,5 @@ if not args.force_update:
 with open(json_output, "w") as f:
     json.dump(arguments, f, indent=2)
 
-# Remove all planes in the scene
-for obj in bpy.data.objects:
-    if obj.type == 'MESH' and obj.data.name.startswith('Plane'):
-        bpy.data.objects.remove(obj, do_unlink=True)
-
-bt.render_mesh_default(arguments)
+bt.render_mesh_default(arguments, no_plane=args.no_plane)
 
