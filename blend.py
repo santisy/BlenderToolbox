@@ -56,13 +56,15 @@ arguments = {
   "image_resolution": [args.resolution, args.resolution], # recommend >1080 for paper figures
   "number_of_samples": 200, # recommend >200 for paper figures
   "mesh_path": input_path, # either .ply or .obj
-  "mesh_position": (1.5042, 0.027193, 1.0916), # UI: click mesh > Transform > Location
-  "mesh_rotation": (-172.82, 24.136, -171.62),
-  "mesh_scale": (1.5, 1.5, 1.5), # UI: click mesh > Transform > Scale
+  "mesh_position": (2.696, -0.11634, 1.8283), # UI: click mesh > Transform > Location
+  "mesh_rotation": (334.64, -7.0694, 452.11),
+  "mesh_scale": (1.0, 1.0, 1.0), # UI: click mesh > Transform > Scale
   "shading": "smooth", # either "flat" or "smooth"
   "subdivision_iteration": 0, # integer
   "mesh_RGB": [26 / 255.0, 150 / 255.0, 173 / 255.0], #coral
-  "light_angle": (6, -30, -155) # UI: click Sun > Transform > Rotation
+  #"light_angle": (6, -30, -155) # UI: click Sun > Transform > Rotation
+  "light_angle": (16.719, -46.205, -168.61),
+  "light_location": (2.9035, -0.00621, 1.951),
 }
 
 if not args.force_update:

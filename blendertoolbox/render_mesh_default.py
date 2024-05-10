@@ -76,9 +76,10 @@ def render_mesh_default(args, no_plane=False):
 
   ## set light
   lightAngle = args["light_angle"]
+  lightLocation = args["light_location"]
   strength = 2
   shadowSoftness = 0.3
-  sun = setLight_sun(lightAngle, strength, shadowSoftness)
+  sun = setLight_sun(lightAngle, lightLocation, strength, shadowSoftness)
 
   ## set ambient light
   setLight_ambient(color=(0.1,0.1,0.1,1)) 
