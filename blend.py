@@ -2,15 +2,18 @@ import json
 import os
 import argparse
 import blendertoolbox as bt
+import glob
 import numpy as np
 import trimesh
 
 parser = argparse.ArgumentParser()
-parser.add_argument("-i", "--input_file", type=str, required=True)
+parser.add_argument("-i", "--input", type=str, required=True, 
+        help="Input folder or file.")
 parser.add_argument("-o", "--output_index", type=int, required=True)
 parser.add_argument("-r", "--resolution", type=int, default=1440)
 parser.add_argument("-f", "--force_update", action="store_true")
 parser.add_argument("-n", "--no_plane", action="store_true")
+parser.add_argument("-d", "--output_folder", type=str, default="")
 
 def normalize_mesh(mesh):
     """
@@ -30,7 +33,8 @@ def normalize_mesh(mesh):
     return mesh
 
 args = parser.parse_args()
-os.makedirs("./output_images", exist_ok=True)
+output_dir = os.path.join("output_images", args.output_folder)
+os.makedirs(output_dir, exist_ok=True)
 os.makedirs("./temp_obj", exist_ok=True)
 
 '''
@@ -43,37 +47,47 @@ RENDER A MESH STEP-BY-STEP:
 5. run "python default_mesh.py" again (wait a couple minutes) to output your final image
 '''
 
-obj_name = os.path.basename(args.input_file).split(".")[0]
-output_path = os.path.join("./output_images", f"{obj_name}_{args.output_index}.png")
-json_output = os.path.join("./output_images", f"{obj_name}_{args.output_index}.json")
-input_path = os.path.join("./temp_obj", f"{obj_name}_normalized.obj")
-mesh = trimesh.load(args.input_file)
-mesh = normalize_mesh(mesh)
-mesh.export(input_path)
+if os.path.isfile(args.input):
+    input_files = [args.input,]
+elif os.path.isdir(args.input):
+    input_files = sorted(glob.glob(os.path.join(args.input, "*.obj")))
 
-arguments = {
-  "output_path": output_path,
-  "image_resolution": [args.resolution, args.resolution], # recommend >1080 for paper figures
-  "number_of_samples": 200, # recommend >200 for paper figures
-  "mesh_path": input_path, # either .ply or .obj
-  "mesh_position": (2.696, -0.11634, 1.8283), # UI: click mesh > Transform > Location
-  "mesh_rotation": (334.64, -7.0694, 452.11),
-  "mesh_scale": (1.0, 1.0, 1.0), # UI: click mesh > Transform > Scale
-  "shading": "smooth", # either "flat" or "smooth"
-  "subdivision_iteration": 0, # integer
-  "mesh_RGB": [26 / 255.0, 150 / 255.0, 173 / 255.0], #coral
-  #"light_angle": (6, -30, -155) # UI: click Sun > Transform > Rotation
-  "light_angle": (16.719, -46.205, -168.61),
-  "light_location": (2.9035, -0.00621, 1.951),
-}
+for idx, input_file in enumerate(input_files):
+    obj_name = os.path.basename(input_file).split(".")[0]
+    output_path = os.path.join(output_dir, f"{obj_name}_{args.output_index}.png")
+    json_output = os.path.join(output_dir, f"{obj_name}_{args.output_index}.json")
+    input_path = os.path.join("./temp_obj", f"{obj_name}_normalized.obj")
+    mesh = trimesh.load(input_file)
+    mesh = normalize_mesh(mesh)
+    mesh.export(input_path)
 
-if not args.force_update:
-    if os.path.isfile(json_output):
-        with open(json_output, "r") as f:
-            arguments = json.load(f)
+    arguments = {
+      "output_path": output_path,
+      "image_resolution": [args.resolution, args.resolution], # recommend >1080 for paper figures
+      "number_of_samples": 200, # recommend >200 for paper figures
+      "mesh_path": input_path, # either .ply or .obj
+      "mesh_position": (1.4873, 0.083058, 1.2572), # UI: click mesh > Transform > Location
+      "mesh_rotation": (444.3, 28.878, -12.115),
+      "mesh_scale": (1.1, 1.1, 1.1), # UI: click mesh > Transform > Scale
+      "shading": "smooth", # either "flat" or "smooth"
+      "subdivision_iteration": 0, # integer
+      "mesh_RGB": [175 / 255.0, 203 / 255.0, 207 / 255.0], #coral
+      "light_angle": (6, -30, -155), # UI: click Sun > Transform > Rotation
+      "ground_location": (-0.083977, -0.067598, 0.43789),
+      #"light_location": (2.9035, -0.00621, 1.951),
+    }
+
+    if not args.force_update:
+        if os.path.isfile(json_output):
+            with open(json_output, "r") as f:
+                arguments = json.load(f)
+        
+    with open(json_output, "w") as f:
+        json.dump(arguments, f, indent=2)
+
+    bt.render_mesh_default(arguments, no_plane=args.no_plane)
+    os.remove(input_path)
     
-with open(json_output, "w") as f:
-    json.dump(arguments, f, indent=2)
-
-bt.render_mesh_default(arguments, no_plane=args.no_plane)
+    if idx > 5:
+        break
 

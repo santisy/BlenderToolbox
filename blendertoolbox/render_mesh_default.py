@@ -66,7 +66,8 @@ def render_mesh_default(args, no_plane=False):
 
   ## set invisible plane (shadow catcher)
   if not no_plane:
-      invisibleGround(shadowBrightness=0.9)
+      ground_location = args.get("ground_location", (0, 0, 0))
+      invisibleGround(shadowBrightness=0.9, location=ground_location)
 
   ## set camera 
   camLocation = (3, 0, 2)
@@ -76,7 +77,7 @@ def render_mesh_default(args, no_plane=False):
 
   ## set light
   lightAngle = args["light_angle"]
-  lightLocation = args["light_location"]
+  lightLocation = args.get("light_location", None)
   strength = 2
   shadowSoftness = 0.3
   sun = setLight_sun(lightAngle, lightLocation, strength, shadowSoftness)
