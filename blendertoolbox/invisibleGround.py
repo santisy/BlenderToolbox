@@ -14,18 +14,19 @@
 import bpy
 
 def invisibleGround(location = (0,0,0), groundSize = 100, shadowBrightness = 0.7):
-	# initialize a ground for shadow
-	bpy.context.scene.cycles.film_transparent = True
-	bpy.ops.mesh.primitive_plane_add(location = location, size = groundSize)
-	try:
-		bpy.context.object.is_shadow_catcher = True # for blender 3.X
-	except:
-		bpy.context.object.cycles.is_shadow_catcher = True # for blender 2.X
+    # initialize a ground for shadow
+    bpy.context.scene.cycles.film_transparent = True
+    bpy.ops.mesh.primitive_plane_add(location = location, size = groundSize)
+    try:
+        bpy.context.object.is_shadow_catcher = True # for blender 3.X
+    except:
+        bpy.context.object.cycles.is_shadow_catcher = True # for blender 2.X
+    bpy.context.object.scale = (1000, 1000, 1000)
 
-	# # set material
-	ground = bpy.context.object
-	mat = bpy.data.materials.new('MeshMaterial')
-	ground.data.materials.append(mat)
-	mat.use_nodes = True
-	tree = mat.node_tree
-	tree.nodes["Principled BSDF"].inputs['Transmission Weight'].default_value = shadowBrightness
+    # # set material
+    ground = bpy.context.object
+    mat = bpy.data.materials.new('MeshMaterial')
+    ground.data.materials.append(mat)
+    mat.use_nodes = True
+    tree = mat.node_tree
+    tree.nodes["Principled BSDF"].inputs['Transmission Weight'].default_value = shadowBrightness

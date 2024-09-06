@@ -66,15 +66,15 @@ for idx, input_file in enumerate(input_files):
       "image_resolution": [args.resolution, args.resolution], # recommend >1080 for paper figures
       "number_of_samples": 200, # recommend >200 for paper figures
       "mesh_path": input_path, # either .ply or .obj
-      "mesh_position": (1.4873, 0.083058, 1.2572), # UI: click mesh > Transform > Location
-      "mesh_rotation": (444.3, 28.878, -12.115),
+      "mesh_position": (1.5037, 0.072, 1.2242), # UI: click mesh > Transform > Location
+      "mesh_rotation": (999.31, -158.93, 27.292),
       "mesh_scale": (1.1, 1.1, 1.1), # UI: click mesh > Transform > Scale
       "shading": "smooth", # either "flat" or "smooth"
       "subdivision_iteration": 0, # integer
-      "mesh_RGB": [175 / 255.0, 203 / 255.0, 207 / 255.0], #coral
-      "light_angle": (6, -30, -155), # UI: click Sun > Transform > Rotation
-      "ground_location": (-0.083977, -0.067598, 0.43789),
-      #"light_location": (2.9035, -0.00621, 1.951),
+      "mesh_RGB": [157 / 255.0, 204 / 255.0, 212 / 255.0], #coral
+      "ground_location": (-0.15, -14004, 0.6),
+      "light_location": (2.6544, 0.38667, 2.2568),
+      "light_angle": (-26.909, -43.868, -121.42), # UI: click Sun > Transform > Rotation
     }
 
     if not args.force_update:
@@ -88,6 +88,4 @@ for idx, input_file in enumerate(input_files):
     bt.render_mesh_default(arguments, no_plane=args.no_plane)
     os.remove(input_path)
     
-    if idx > 5:
-        break
 
