@@ -1,13 +1,14 @@
 import os
+import glob
 import math
 import argparse
 from PIL import Image
 import img2pdf
 import pikepdf
 
-def stitch_images_to_one_page(image_folder, output_pdf_path, compression_level=2):
+def stitch_images_to_one_page(image_folder, orient_id, output_pdf_path, compression_level=2):
     # Get list of PNG images in the folder
-    images = [os.path.join(image_folder, f) for f in os.listdir(image_folder) if f.endswith(".png")]
+    images = sorted(glob.glob(os.path.join(image_folder, f"*_{orient_id}.png")))
     
     # Sort images by name to maintain order
     images.sort()
@@ -63,6 +64,7 @@ def compress_pdf(input_pdf_path, output_pdf_path, compression_level):
 def main():
     parser = argparse.ArgumentParser(description="Stitch PNG images into a single-page PDF")
     parser.add_argument("image_folder", help="Folder containing PNG images to stitch")
+    parser.add_argument("-i", "--orient_id", type=int, default=0)
     args = parser.parse_args()
 
     # Get the folder name to use as the output PDF file name
@@ -73,10 +75,10 @@ def main():
     os.makedirs(output_dir, exist_ok=True)
 
     # Define the output PDF path
-    output_pdf_path = os.path.join(output_dir, f"{folder_name}.pdf")
+    output_pdf_path = os.path.join(output_dir, f"{folder_name}_{args.orient_id}.pdf")
 
     # Stitch images into one page PDF and compress
-    stitch_images_to_one_page(args.image_folder, output_pdf_path, compression_level=1)  # compression_level=1 for medium quality
+    stitch_images_to_one_page(args.image_folder, args.orient_id, output_pdf_path, compression_level=1)  # compression_level=1 for medium quality
 
 if __name__ == "__main__":
     main()
